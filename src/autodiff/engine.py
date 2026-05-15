@@ -24,10 +24,13 @@ class Primal:
         self._op = _op
         if _parents is not None:
             self._parents = _parents
-        self._parents = set()
+        else: 
+            self._parents = set()
 
         self._backward = lambda: None
 
+    # Implementation of topo_sort() was done via ChatGPT.
+    # Prompt: Can you implement a topological sort for reverse mode auto differentiation
     def topo_sort(self) -> list[Primal]:
         """
         Returns a list of all primals within the compute graph ordered 
@@ -40,10 +43,10 @@ class Primal:
             if primal not in visited:
                 visited.add(primal)
             
-            for child in primal._parents:
-                build(child)
-            
-            topo_elems.append(primal)
+                for child in primal._parents:
+                    build(child)
+
+                topo_elems.append(primal)
         
         build(self)
         return topo_elems
@@ -52,13 +55,17 @@ class Primal:
         """
         Performs reverse mode auto differentiation
         """
-        topo_elems = self.topo_sort
+        topo_elems = self.topo_sort()
         self.grad = 1.0 
 
         for primal in reversed(topo_elems):
-            primal._backward
+            primal._backward()
     
+    # === Binary Operations === 
     def __add__(self, other):
+        if not isinstance(other, Primal):
+            other = Primal(other, "")
+
         out = Primal(self.data + other.data, "",  "+", {self, other})
         
         def _backward():
@@ -69,6 +76,9 @@ class Primal:
         return out
     
     def __sub__(self, other):
+        if not isinstance(other, Primal):
+            other = Primal(other, "")
+
         out = Primal(self.data - other.data, "",  "-", {self, other})
 
         def _backward():
@@ -79,24 +89,38 @@ class Primal:
         return out
     
     def __mul__(self, other):
+        if not isinstance(other, Primal):
+            other = Primal(other, "")
+
         out = Primal(self.data * other.data, "", "*", {self, other})
 
         def _backward():
             self.grad += out.grad * other.data
             other.grad += out.grad * self.data
 
-        out._backward = self._backward
+        out._backward = _backward
         return out
     
     def __truediv__(self, other):
+        if not isinstance(other, Primal):
+            other = Primal(other, "")
+
         out = Primal(self.data / other.data, "", "/", {self, other})
 
         def _backward():
-            self.grad += out.grad * (1 / other.data)
-            self.other += out.grad * ((-self.data) / (other.data ** 2))
+            if other.data != 0:
+                self.grad += out.grad * (1 / other.data)
+                self.other += out.grad * ((-self.data) / (other.data ** 2))
         
-        out._backward = self._backward
+        out._backward = _backward
         return out
+    
+    # === Unary Operation === 
+    def __pow__(self, other):
+        pass
+
+    def tanh(self):
+        pass
     
     def __repr__(self):
         return f"Value(data={self.data}, \n op={self._op}, \n parents={self._parents}, \n label={self.label})"
