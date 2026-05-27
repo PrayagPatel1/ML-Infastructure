@@ -1,14 +1,3 @@
-# VS Code
-.vscode 
-
-# Virtual Environments
-.env
-
-# Unit test
-.pytest_cache/ 
-
-# virtual environments
-.venv/
-
-# Dataset Files
-*.csv
+.vscode
+/bin/
+/obj/ 
