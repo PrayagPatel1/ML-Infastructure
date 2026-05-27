@@ -1,6 +1,7 @@
+#include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
+#include <assert.h>
 
 #include "vector.h"
 
@@ -10,29 +11,36 @@ void allocateVector(vector *vec, size_t length)
     if (!elements)
     {
         perror("ERROR: element field has not been assigned properly");
+        memset(vec, 0, sizeof(vector));
         return;
     }
     vec->elements = elements;
     memset(vec->elements, 0, length * sizeof(float));
     vec->length = length;
+    vec->owner = 1;
 }
 
 void freeVector(vector *vec)
 {
-    if (!vec)
+    if (!vec || !vec->elements)
+    {
         return;
-    free(vec->elements);
+    }
+
+    if (vec->owner && vec->elements)
+    {
+        free(vec->elements);
+    }
+
     vec->elements = NULL;
     vec->length = 0;
+    vec->owner = 0;
 }
 
 vector addVector(vector *vec1, vector *vec2)
 {
     vector result;
-    if (vec1->length != vec2->length)
-    {
-        return (vector){NULL, 0};
-    }
+    assert(vec1->length == vec2->length);
     allocateVector(&result, vec1->length);
 
     for (size_t idx = 0; idx < result.length; idx++)

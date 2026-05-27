@@ -1,12 +1,14 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
+#include <stddef.h>
+
 typedef struct vector
 {
     float *elements;
     size_t length;
+    int owner;
 } vector;
-
 
 void allocateVector(vector *vec, size_t length);
 void freeVector(vector *vec);
