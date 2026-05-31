@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <math.h>
 
 #include "vector.h"
 
@@ -54,10 +55,7 @@ vector addVector(vector *vec1, vector *vec2)
 vector subVector(vector *vec1, vector *vec2)
 {
     vector result;
-    if (vec1->length != vec2->length)
-    {
-        return (vector){NULL, 0};
-    }
+    assert(vec1->length == vec2->length);
     allocateVector(&result, vec1->length);
 
     for (size_t idx = 0; idx < result.length; idx++)
@@ -73,5 +71,25 @@ void scaleVector(vector *vec, float scalar)
     for (size_t idx = 0; idx < vec->length; idx++)
     {
         vec->elements[idx] *= scalar;
+    }
+}
+
+void normalizeVector(vector *vec)
+{
+    if (!vec->elements)
+    {
+        return;
+    }
+
+    int vec_length = 0;
+    for (size_t idx = 0; idx < vec->length; idx++)
+    {
+        vec_length += (vec->elements[idx] * vec->elements[idx]);
+    }
+    vec_length = sqrtl(vec_length);
+
+    for (size_t idx = 0; idx < vec->length; idx++)
+    {
+        vec->elements[idx] /= vec_length;
     }
 }

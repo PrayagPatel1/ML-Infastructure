@@ -17,4 +17,6 @@ vector addVector(vector *vec1, vector *vec2);
 vector subVector(vector *vec1, vector *vec2);
 void scaleVector(vector *vec, float scalar);
 
+void normalizeVector(vector *vec);
+
 #endif
