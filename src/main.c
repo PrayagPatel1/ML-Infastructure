@@ -1,32 +1,96 @@
 #include <stdio.h>
-#include "vector.h"
+#include <stdlib.h>
+#include <string.h>
+// #include "vector.h"
+
+typedef struct matrix
+{
+    float *elements;
+    size_t rows, cols;
+} matrix;
+
+void matrix_allocate(matrix *matrix, size_t rows, size_t cols)
+{
+    matrix->elements = malloc(rows * cols * sizeof(float));
+    if (!matrix->elements)
+    {
+        matrix->elements = NULL;
+        matrix->rows = 0;
+        matrix->cols = 0;
+        perror("ERROR: Cannot allocate memory to a matrix type");
+        return;
+    }
+    memset(matrix->elements, 0, rows * cols * sizeof(float));
+    matrix->cols = cols;
+    matrix->rows = rows;
+}
+
+void matrix_free(matrix *matrix)
+{
+    if (!matrix || !matrix->elements)
+        return;
+
+    free(matrix->elements);
+    matrix->elements = NULL;
+    matrix->cols = 0;
+    matrix->rows = 0;
+}
+
+/* Element-wise Addition, Subtraction, Multiplication, and Divison */
+matrix matrix_add(matrix *mat1, matrix *mat2)
+{
+    assert(
+        mat1->rows == mat2->rows &&
+        mat1->cols == mat2->cols &&
+        "ERROR: Two matrices must be the same size");
+
+    matrix sum_matrix = {0};
+    matrix_allocate(&sum_matrix, mat1->rows, mat1->cols);
+
+    for (size_t row_idx = 0; row_idx < sum_matrix.rows * sum_matrix.cols; row_idx++)
+    {
+        sum_matrix.elements[row_idx] = mat1->elements[row_idx] + mat2->elements[row_idx];
+    }
+    return sum_matrix;
+}
+
+matrix matrix_sub(matrix *mat1, matrix *mat2)
+{
+    assert(
+        mat1->rows == mat2->rows &&
+        mat1->cols == mat2->cols &&
+        "ERROR: Two matrices must be the same size");
+
+    matrix diff_matrix = {0};
+    matrix_allocate(&diff_matrix, mat1->rows, mat1->cols);
+
+    for (size_t row_idx = 0; row_idx < diff_matrix.rows * diff_matrix.cols; row_idx++)
+    {
+        diff_matrix.elements[row_idx] = mat1->elements[row_idx] - mat2->elements[row_idx];
+    }
+    return diff_matrix;
+}
+
+matrix matrix_mul(matrix *mat1, matrix *mat2)
+{
+    assert(
+        mat1->rows == mat2->rows &&
+        mat1->cols == mat2->cols &&
+        "ERROR: Two matrices must be the same size");
+
+    matrix mul_matrix = {0};
+    matrix_allocate(&mul_matrix, mat1->rows, mat1->cols);
+
+    for (size_t row_idx = 0; row_idx < mul_matrix.rows * mul_matrix.cols; row_idx++)
+    {
+        mul_matrix.elements[row_idx] = mat1->elements[row_idx] * mat2->elements[row_idx];
+    }
+    return mul_matrix;
+}
+
+/* Matrix to Matrix Multiplication */
 
 int main(void)
 {
-    vector vec1;
-    vector vec2;
-
-    allocateVector(&vec1, 4);
-    vec1.elements[0] = 1.0f;
-    vec1.elements[1] = 2.0f;
-    vec1.elements[2] = 3.0f;
-    vec1.elements[3] = 4.0f;
-
-    allocateVector(&vec2, 4);
-    vec2.elements[0] = 1.0f;
-    vec2.elements[1] = 4.0f;
-    vec2.elements[2] = 6.0f;
-    vec2.elements[3] = 8.0f;
-
-    vector result = addVector(&vec1, &vec2);
-
-    printf("Vector Length: %zu \n", result.length);
-    for (size_t idx = 0; idx < result.length; idx++)
-    {
-        printf("Vector Element [%zu]: %f (Memory Address: %p)\n", idx, result.elements[idx], (void *)&result.elements[idx]);
-    }
-
-    freeVector(&vec1);
-    freeVector(&vec2);
     return 0;
 }
