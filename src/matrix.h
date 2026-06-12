@@ -1,6 +1,10 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+
 typedef struct matrix
 {
     float *elements;
@@ -18,4 +22,4 @@ matrix matrix_mul(matrix *mat1, matrix *mat2);
 /* Matrix by Matrix Multiplication */
 matrix matrix_matrix_mul(matrix *mat1, matrix *mat2);
 
-#endif 
+#endif

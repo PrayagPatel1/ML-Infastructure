@@ -97,9 +97,9 @@ matrix matrix_matrix_mul(matrix *mat1, matrix *mat2)
 
             for (size_t idx = 0; idx < mat1->cols; idx++)
             {
-                sum += mat1->elements[(row_idx * mat1->cols) + col_idx] * mat2->elements[(row_idx * mat1->cols) + col_idx];
+                sum += mat1->elements[(row_idx * mat1->cols) + idx] * mat2->elements[(idx * mat2->cols) + col_idx];
             }
-            result.elements[(row_idx * mat1->cols) + col_idx] = sum;
+            result.elements[(row_idx * mat2->cols) + col_idx] = sum;
         }
     }
 

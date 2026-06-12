@@ -74,6 +74,7 @@ void scaleVector(vector *vec, float scalar)
     }
 }
 
+// TODO: Figure out how to be more precise with current vector elements
 void normalizeVector(vector *vec)
 {
     if (!vec->elements)
@@ -81,15 +82,18 @@ void normalizeVector(vector *vec)
         return;
     }
 
-    int vec_length = 0;
+    float vec_length = 0.0f;
+    float inv_length = 0.0f;
+
     for (size_t idx = 0; idx < vec->length; idx++)
     {
         vec_length += (vec->elements[idx] * vec->elements[idx]);
     }
-    vec_length = sqrtl(vec_length);
+    vec_length = sqrtf(vec_length);
+    inv_length = 1.0f / vec_length;
 
     for (size_t idx = 0; idx < vec->length; idx++)
     {
-        vec->elements[idx] /= vec_length;
+        vec->elements[idx] *= inv_length;
     }
 }
