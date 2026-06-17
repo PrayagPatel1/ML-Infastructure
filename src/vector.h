@@ -19,4 +19,6 @@ void scaleVector(vector *vec, float scalar);
 
 void normalizeVector(vector *vec);
 
+float vector_dot_prod(vector *vec1, vector *vec2);
+
 #endif

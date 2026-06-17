@@ -12,4 +12,4 @@ Currently AI is only being used to timeline this entire project and be able to h
 
 ## Resources Used
 
-1.Neural Networks and Deep Learning by Michael Nielsen [Charpter 1 and Capter 3]
+1. Neural Networks and Deep Learning by Michael Nielsen [Charpter 1 and Capter 3]

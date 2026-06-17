@@ -97,3 +97,16 @@ void normalizeVector(vector *vec)
         vec->elements[idx] *= inv_length;
     }
 }
+
+float vector_dot_prod(vector *vec1, vector *vec2)
+{
+    assert(vec1->length == vec2->length);
+
+    float result = 0.0f;
+    for (size_t idx = 0; idx < vec1->length; idx++)
+    {
+        result += vec1->elements[idx] * vec2->elements[idx];
+    }
+
+    return result;
+}
