@@ -146,10 +146,5 @@ int main(void)
     test_vector_scale();
     test_vector_normalize();
 
-    printf("=== Test Results === \n");
-    printf("\n");
-    printf("Total Test: %d | Total Test Passed: %d | Total Test Failed: %d",
-           total_tests,
-           tests_pass,
-           tests_failed);
+    test_result();
 }

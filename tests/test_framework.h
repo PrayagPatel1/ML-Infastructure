@@ -36,4 +36,14 @@ static inline void test_sperator(const char *msg)
     printf("=== %s ===\n", msg);
 }
 
+static inline void test_result(void)
+{
+    printf("=== Test Results === \n");
+    printf("\n");
+    printf("Total Test: %d | Total Test Passed: %d | Total Test Failed: %d",
+           total_tests,
+           tests_pass,
+           tests_failed);
+}
+
 #endif
