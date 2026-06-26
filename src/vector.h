@@ -21,4 +21,6 @@ void normalizeVector(vector *vec);
 
 float vector_dot_prod(vector *vec1, vector *vec2);
 
+int vector_copy_into(vector *dest, vector *src);
+
 #endif

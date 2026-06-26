@@ -110,3 +110,30 @@ float vector_dot_prod(vector *vec1, vector *vec2)
 
     return result;
 }
+
+int vector_copy_into(vector *dest, vector *src)
+{
+    if (!dest || !src)
+    {
+        fprintf(stderr, "ERROR: dest and src field must not be NULL\n");
+        return 1;
+    }
+
+    dest->length = src->length;
+    dest->owner = src->owner;
+
+    // Manual Copy for Pointers
+    if (src->elements != NULL && dest->elements != NULL)
+    {
+        for (size_t idx = 0; idx < src->length; idx++)
+        {
+            dest->elements[idx] = src->elements[idx];
+        }
+    }
+    else
+    {
+        dest->elements = NULL;
+    }
+
+    return 0;
+}
