@@ -1,4 +1,5 @@
 #include "loss.h"
+#include "math.h"
 
 float mean_squared_error(vector *predicted_outputs, vector *true_outputs)
 {

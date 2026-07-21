@@ -1,14 +1,13 @@
 /**
- * A manual test suite for vector.c and matrix.c
+ * A manual unit test suite for vector.c and matrix.c
  */
 
 #include <stdlib.h>
 #include <assert.h>
 #include <stddef.h>
 
-#include "../src/matrix.h"
-#include "../src/vector.h"
 #include "test_framework.h"
+#include "../include/neural_net_lib.h"
 
 /* Vector Test Unit Cases*/
 
@@ -136,6 +135,198 @@ static void test_vector_normalize(void)
     freeVector(&vec);
 }
 
+/* Matrix Unit Tests */
+static void test_matrix_alloc_and_free(void)
+{
+    test_sperator("Matrix: Allocate and Free Matrix Test");
+
+    /* Allocation Test */
+    matrix mat;
+    matrix_allocate(&mat, 2, 3);
+
+    CHECK(mat.rows == 2, "Number of rows is 2");
+    CHECK(mat.cols == 3, "Number of columns is 3");
+
+    size_t num_elem = 0;
+    for (size_t i = 0; i < 6; ++i)
+    {
+        if (mat.elements[i] == 0)
+        {
+            num_elem++;
+        }
+        else
+        {
+            break;
+        }
+    }
+    CHECK(num_elem == 6, "All elements in the matrix are zero after initalization");
+
+    /* Free Test */
+    matrix_free(&mat);
+    CHECK(mat.rows == 0, "Rows set to zero after free");
+    CHECK(mat.cols == 0, "Cols set to zero after free");
+    CHECK(mat.elements == NULL, "Elements of a matrix is null after free.");
+
+    matrix_free(&mat);
+    CHECK(1, "Double free doesn't crash the program");
+}
+
+static void test_matrix_addition(void)
+{
+    test_sperator("Matrix: Element-wise Matrix Addition Test");
+
+    matrix mat1;
+    matrix mat2;
+    matrix_allocate(&mat1, 2, 2);
+    matrix_allocate(&mat2, 2, 2);
+
+    for (size_t y = 0; y < mat1.cols; y++)
+    {
+        for (size_t x = 0; x < mat1.rows; x++)
+        {
+            mat1.elements[x * mat1.cols + y] = (float)x;
+        }
+    }
+
+    for (size_t y = 0; y < mat1.cols; y++)
+    {
+        for (size_t x = 0; x < mat1.rows; x++)
+        {
+            mat1.elements[x * mat1.cols + y] = 2.0f;
+        }
+    }
+
+    matrix result = matrix_add(&mat1, &mat2);
+
+    CHECK(result.rows == 2, "Rows are not modified");
+    CHECK(result.cols == 2, "Cols are not modified");
+    CHECK(result.elements[0] == 2.0f, "Row 1 Col 1 == 2");
+    CHECK(result.elements[1] == 2.0f, "Row 1 Col 2 == 2");
+    CHECK(result.elements[2] == 3.0f, "Row 2 Col 1 == 3");
+    CHECK(result.elements[3] == 3.0f, "Row 2 Col 2 == 3");
+
+    matrix_free(&mat1);
+    matrix_free(&mat2);
+    matrix_free(&result);
+}
+
+static void test_matrix_subtraction(void)
+{
+    test_sperator("Matrix: Element-wise Matrix Subtraction Test");
+
+    matrix mat1;
+    matrix mat2;
+    matrix_allocate(&mat1, 2, 2);
+    matrix_allocate(&mat2, 2, 2);
+
+    for (size_t y = 0; y < mat1.cols; y++)
+    {
+        for (size_t x = 0; x < mat1.rows; x++)
+        {
+            mat1.elements[x * mat1.cols + y] = (float)x;
+        }
+    }
+
+    for (size_t y = 0; y < mat1.cols; y++)
+    {
+        for (size_t x = 0; x < mat1.rows; x++)
+        {
+            mat1.elements[x * mat1.cols + y] = 2.0f;
+        }
+    }
+
+    matrix result = matrix_sub(&mat1, &mat2);
+
+    CHECK(result.rows == 2, "Rows are not modified");
+    CHECK(result.cols == 2, "Cols are not modified");
+    CHECK(result.elements[0] == -2.0f, "Row 1 Col 1 == -2");
+    CHECK(result.elements[1] == -2.0f, "Row 1 Col 2 == -2");
+    CHECK(result.elements[2] == -1.0f, "Row 2 Col 1 == -1");
+    CHECK(result.elements[3] == -1.0f, "Row 2 Col 2 == -1");
+
+    matrix_free(&mat1);
+    matrix_free(&mat2);
+    matrix_free(&result);
+}
+
+static void test_matrix_multiplication(void)
+{
+    test_sperator("Matrix: Element-wise Matrix Multiplication Test");
+
+    matrix mat1;
+    matrix mat2;
+    matrix_allocate(&mat1, 2, 2);
+    matrix_allocate(&mat2, 2, 2);
+
+    for (size_t y = 0; y < mat1.cols; y++)
+    {
+        for (size_t x = 0; x < mat1.rows; x++)
+        {
+            mat1.elements[x * mat1.cols + y] = (float)x;
+        }
+    }
+
+    for (size_t y = 0; y < mat1.cols; y++)
+    {
+        for (size_t x = 0; x < mat1.rows; x++)
+        {
+            mat1.elements[x * mat1.cols + y] = 2.0f;
+        }
+    }
+
+    matrix result = matrix_mul(&mat1, &mat2);
+
+    CHECK(result.rows == 2, "Rows are not modified");
+    CHECK(result.cols == 2, "Cols are not modified");
+    CHECK(result.elements[0] == 0.0f, "Row 1 Col 1 == 0");
+    CHECK(result.elements[1] == 0.0f, "Row 1 Col 2 == 0");
+    CHECK(result.elements[2] == 2.0f, "Row 2 Col 1 == 2");
+    CHECK(result.elements[3] == 2.0f, "Row 2 Col 2 == 2");
+
+    matrix_free(&mat1);
+    matrix_free(&mat2);
+    matrix_free(&result);
+}
+
+static void test_matrix_matrix_multiplication(void)
+{
+    test_sperator("Matrix: Matrix-Matrix Multiplication Test");
+
+    matrix mat1;
+    matrix mat2;
+    matrix_allocate(&mat1, 2, 2);
+    matrix_allocate(&mat2, 2, 2);
+
+    for (size_t y = 0; y < mat1.cols; y++)
+    {
+        for (size_t x = 0; x < mat1.rows; x++)
+        {
+            mat1.elements[x * mat1.cols + y] = (float)x;
+        }
+    }
+
+    for (size_t y = 0; y < mat1.cols; y++)
+    {
+        for (size_t x = 0; x < mat1.rows; x++)
+        {
+            mat1.elements[x * mat1.cols + y] = 2.0f;
+        }
+    }
+
+    matrix result = matrix_matrix_mul(&mat1, &mat2);
+
+    CHECK(result.rows == mat1.rows, "Number of rows is the same as matrix 1 rows.");
+    CHECK(result.cols == mat2.cols, "Number of cols is the same as matrix 2 rows.");
+    CHECK(result.elements[0] == 0.0f, "Row 1 Col 1 == 0");
+    CHECK(result.elements[1] == 0.0f, "Row 1 Col 2 == 0");
+    CHECK(result.elements[2] == 4.0f, "Row 2 Col 1 == 4");
+    CHECK(result.elements[3] == 4.0f, "Row 2 Col 2 == 4");
+
+    matrix_free(&mat1);
+    matrix_free(&mat2);
+    matrix_free(&result);
+}
+
 /* Main Test Registry Entry Point */
 
 int main(void)
@@ -145,6 +336,12 @@ int main(void)
     test_vector_sub();
     test_vector_scale();
     test_vector_normalize();
+
+    test_matrix_alloc_and_free();
+    test_matrix_addition();
+    test_matrix_multiplication();
+    test_matrix_subtraction();
+    test_matrix_matrix_multiplication();
 
     test_result();
 }

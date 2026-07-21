@@ -8,7 +8,7 @@ void network_init(network *new_network, size_t num_layers, int *input_sizes, int
         fprintf(stderr, "ERROR: Cannot allocate heap memory to array of layers->\n");
         new_network->num_layers = 0;
         new_network->layers = NULL;
-        return new_network;
+        return;
     }
 
     new_network->num_layers = num_layers;
@@ -24,7 +24,21 @@ void network_free(network *net)
         return;
     if (net->layers)
     {
-        free(&(net->layers));
+        for (size_t i = 0; i < net->num_layers; i++)
+        {
+            freeVector(&net->layers[i].biases);
+            freeVector(&net->layers[i].prev_input);
+            freeVector(&net->layers[i].prev_output);
+            freeVector(&net->layers[i].prev_z);
+
+            matrix_free(&net->layers[i].weights);
+
+            net->layers[i].func = NULL;
+            net->layers[i].input_size = 0;
+            net->layers[i].output_size = 0;
+        }
+
+        free(net->layers);
     }
     net->layers = NULL;
     net->layers = 0;

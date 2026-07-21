@@ -16,4 +16,4 @@ void network_free(network *net);
 
 vector network_forward_prop(network *net, vector *inputs);
 
-#endif 
+#endif // NETWORK_H

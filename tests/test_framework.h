@@ -46,4 +46,4 @@ static inline void test_result(void)
            tests_failed);
 }
 
-#endif
+#endif // TEST_FRAMEWORK_H

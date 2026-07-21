@@ -8,7 +8,7 @@
 
 static void test_activation_sigmoid(void)
 {
-    test_seprator("Sigmoid Test");
+    test_sperator("Sigmoid Test");
     vector vec;
     allocateVector(&vec, 3);
 
@@ -27,7 +27,7 @@ static void test_activation_sigmoid(void)
 
 static void test_activation_sigmoid_derivative(void)
 {
-    test_seprator("Sigmoid Derivative Test");
+    test_sperator("Sigmoid Derivative Test");
 
     vector vec;
     allocateVector(&vec, 3);

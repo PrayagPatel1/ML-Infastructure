@@ -33,4 +33,4 @@ void layer_free(layer *curr_layer);
 
 void forward_prop_layer(vector inputs, layer *layer);
 
-#endif
+#endif // Layer_H
