@@ -21,9 +21,9 @@ layer layer_init(size_t input_size, size_t output_size, activation_func func)
 
     init_weight_basic(&layer.weights);
 
-    allocateVector(&(layer.prev_input), output_size);
+    allocateVector(&(layer.prev_input), input_size);
     allocateVector(&(layer.prev_output), output_size);
-    allocateVector(&(layer.prev_z), input_size);
+    allocateVector(&(layer.prev_z), output_size);
 
     layer.func = func;
 

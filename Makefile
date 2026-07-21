@@ -25,7 +25,7 @@ all: $(TARGET)
 
 # Link Rule: Combine object files into the final binary
 $(TARGET): $(OBJS) | $(BIN_DIR)
-	$(CC) $(OBJS) -o $@
+	$(CC) $(OBJS) -o $@ -lm
 
 # Compile Rule: Convert each .c file into a .o file
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)

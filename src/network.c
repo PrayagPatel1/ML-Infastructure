@@ -54,6 +54,9 @@ vector network_forward_prop(network *net, vector *inputs)
     for (size_t idx = 0; idx < net->num_layers; idx++)
     {
         forward_prop_layer(current, &(net->layers[idx]));
+
+        freeVector(&current);
+        allocateVector(&current, net->layers[idx].prev_output.length);
         vector_copy_into(&current, &(net->layers[idx].prev_output));
     }
 
