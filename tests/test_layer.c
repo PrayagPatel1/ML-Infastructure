@@ -6,7 +6,7 @@
 #include "../src/layer.h"
 #include "../src/activation.h"
 
-static test_weight_init(void)
+static void test_weight_init(void)
 {
     test_sperator("Layer: Weight Initialization Test");
 
@@ -18,14 +18,16 @@ static test_weight_init(void)
     for (size_t i = 0; i < mat.cols * mat.rows; i++)
     {
         if (mat.elements[i] == mat.elements[i + 1])
+        {
             dup_cnt++;
+        }
     }
 
     CHECK(dup_cnt < (int)(mat.cols * mat.rows) / 2, "Weight matrix randomly initalized.");
-    free(&mat);
+    matrix_free(&mat);
 }
 
-static test_layer_alloc_and_free(void)
+static void test_layer_alloc_and_free(void)
 {
     test_sperator("Layer: Allocation and Free Test");
 
@@ -52,8 +54,10 @@ static test_layer_alloc_and_free(void)
     CHECK(layer.weights.elements == NULL, "Weights have been freed");
 }
 
-static test_forward_prop(void)
+static void test_forward_prop(void)
 {
+    test_sperator("Layer: Forward Propagation Test");
+
     size_t input_size = 2;
     size_t output_size = 1;
     layer layer = layer_init(input_size, output_size, activation_sigmoid);
@@ -75,8 +79,6 @@ static test_forward_prop(void)
 
     CHECK(layer.prev_z.elements != NULL, "Prev z vector allocated");
     CHECK(layer.prev_z.length == 1, "Length of prev z vector is properly set");
-
-    printf("Previous Z: %f", layer.prev_z.elements[0]);
 }
 
 int main(void)

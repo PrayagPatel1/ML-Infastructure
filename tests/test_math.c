@@ -7,7 +7,8 @@
 #include <stddef.h>
 
 #include "test_framework.h"
-#include "../include/neural_net_lib.h"
+#include "../src/vector.h"
+#include "../src/matrix.h"
 
 /* Vector Test Unit Cases*/
 
@@ -128,9 +129,9 @@ static void test_vector_normalize(void)
 
     normalizeVector(&vec);
 
-    CHECK(float_eq(vec.elements[0], 0.26f), "normalize: element 0 == 0.26");
-    CHECK(float_eq(vec.elements[1], 0.53f), "normalize: element 1 == 0.53");
-    CHECK(float_eq(vec.elements[2], 0.80f), "normalize: element 2 == 0.80");
+    CHECK(float_eq(vec.elements[0], 0.267261f), "normalize: element 0 == 0.26");
+    CHECK(float_eq(vec.elements[1], 0.534522f), "normalize: element 1 == 0.53");
+    CHECK(float_eq(vec.elements[2], 0.801784f), "normalize: element 2 == 0.80");
 
     freeVector(&vec);
 }
@@ -192,7 +193,7 @@ static void test_matrix_addition(void)
     {
         for (size_t x = 0; x < mat1.rows; x++)
         {
-            mat1.elements[x * mat1.cols + y] = 2.0f;
+            mat2.elements[x * mat1.cols + y] = 2.0f;
         }
     }
 
@@ -231,7 +232,7 @@ static void test_matrix_subtraction(void)
     {
         for (size_t x = 0; x < mat1.rows; x++)
         {
-            mat1.elements[x * mat1.cols + y] = 2.0f;
+            mat2.elements[x * mat1.cols + y] = 2.0f;
         }
     }
 
@@ -270,7 +271,7 @@ static void test_matrix_multiplication(void)
     {
         for (size_t x = 0; x < mat1.rows; x++)
         {
-            mat1.elements[x * mat1.cols + y] = 2.0f;
+            mat2.elements[x * mat1.cols + y] = 2.0f;
         }
     }
 
@@ -309,7 +310,7 @@ static void test_matrix_matrix_multiplication(void)
     {
         for (size_t x = 0; x < mat1.rows; x++)
         {
-            mat1.elements[x * mat1.cols + y] = 2.0f;
+            mat2.elements[x * mat1.cols + y] = 2.0f;
         }
     }
 

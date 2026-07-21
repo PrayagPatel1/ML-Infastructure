@@ -1,3 +1,11 @@
 .vscode
+
+# Directories to Ignore
 /bin/
 /obj/ 
+/unit_tests/
+
+# Files to ignore
+*.obj
+*.o 
+*.exe

@@ -42,6 +42,7 @@ void network_free(network *net)
     }
     net->layers = NULL;
     net->layers = 0;
+    net->num_layers = 0;
 }
 
 vector network_forward_prop(network *net, vector *inputs)

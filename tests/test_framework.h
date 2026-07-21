@@ -15,32 +15,33 @@ static inline int float_eq(float a, float b)
     return fabs(a - b) < 1e-5f;
 }
 
-#define CHECK(cond, msg)                                           \
-    do                                                             \
-    {                                                              \
-        total_tests++;                                             \
-        if (cond)                                                  \
-        {                                                          \
-            tests_pass++;                                          \
-            printf("    [PASS] %s\n", msg);                        \
-        }                                                          \
-        else                                                       \
-        {                                                          \
-            tests_failed++;                                        \
-            printf("    [FAILED] %s (line: %d)\n", msg, __LINE__); \
-        }                                                          \
+#define CHECK(cond, msg)                                            \
+    do                                                              \
+    {                                                               \
+        total_tests++;                                              \
+        if (cond)                                                   \
+        {                                                           \
+            tests_pass++;                                           \
+            printf("    [PASS] %s\n", msg);                         \
+        }                                                           \
+        else                                                        \
+        {                                                           \
+            tests_failed++;                                         \
+            printf("    [FAILED] %s (line: %d) \n", msg, __LINE__); \
+        }                                                           \
     } while (0)
 
 static inline void test_sperator(const char *msg)
 {
+    printf("\n");
     printf("=== %s ===\n", msg);
 }
 
 static inline void test_result(void)
 {
-    printf("=== Test Results === \n");
     printf("\n");
-    printf("Total Test: %d | Total Test Passed: %d | Total Test Failed: %d",
+    printf("=== Test Results === \n");
+    printf("Total Test: %d | Total Test Passed: %d | Total Test Failed: %d\n",
            total_tests,
            tests_pass,
            tests_failed);

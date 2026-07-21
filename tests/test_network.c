@@ -11,9 +11,12 @@ static void test_network_init_and_free(void)
     test_sperator("Network: Initalization Test");
 
     network net;
-    network_init(&net, 3, 2, 1, activation_sigmoid);
+    int input_sizes[] = {0, 2, 2};
+    int output_sizes[] = {2, 2, 1};
+    activation_func funcs[] = {activation_sigmoid};
+    network_init(&net, 3, input_sizes, output_sizes, funcs);
 
-    CHECK(net.num_layers == 2, "Number of layers properly set");
+    CHECK(net.num_layers == 3, "Number of layers properly set");
     CHECK(net.layers != NULL, "Layers of network allocated");
 
     network_free(&net);
@@ -22,14 +25,13 @@ static void test_network_init_and_free(void)
     CHECK(net.layers == NULL, "Layers of network are freed");
 }
 
-static test_network_forward_pass(void)
-{
-}
+// static void test_network_forward_pass(void)
+// {
+// }
 
 int main(void)
 {
     test_network_init_and_free();
-    test_network_free();
     // test_network_forward_pass();
 
     test_result();
